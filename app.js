@@ -2,19 +2,33 @@ var box = [];
 var wall;
 var ondor, urt;
 var i = [2]; j = [0];
+var worldWidth = 20;
+var worldHeight = 7;
+var titleWidth = 64;
+var titleHeigth = 90;
+
+var map = [];
+for(i = 0; i < worldHeight; i++) {
+    map[i] = [];
+    for(j = 0; j < worldWidth; j++) {
+        map[i][j] = 0;
+    }
+}
 
 function startGame() {
     gameArea.start();
     wall = new component(20, urt, "green", urt + 30, 0);
 }
 
+
+
 var gameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
         ondor = 720;
         urt = 1280;
-        this.canvas.width = urt;
-        this.canvas.height = ondor;
+        this.canvas.width = worldWidth* titleWidth;
+        this.canvas.height = worldHeight * titleHeigth;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
@@ -43,19 +57,6 @@ function component(width, height, color, x, y) {
 
     this.update = function(){
         ctx = gameArea.context;
-        // ctx.moveTo(200, 350);
-        // ctx.lineTo(200, 100);ctx.stroke();
-        // ctx.moveTo(200, 100);
-        // ctx.lineTo(1100, 100);ctx.stroke();
-        // ctx.moveTo(1100, 100);
-        // ctx.lineTo(1100, 250);ctx.stroke();
-        // ctx.moveTo(1100, 250);
-        // ctx.lineTo(350, 250);ctx.stroke();
-        // ctx.moveTo(350, 250);
-        // ctx.lineTo(350, 450);ctx.stroke();
-        // ctx.moveTo(350, 450);
-        // ctx.lineTo(10000, 450);
-        // ctx.stroke();
         ctx.fillStyle = color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
@@ -85,26 +86,6 @@ function component(width, height, color, x, y) {
     }
 
     this.nodeChek = function(k){
-        if (this.x == 200 && this.y == 360){
-            i[k] = 0;
-            j[k] = -2;
-        }
-        if (this.x == 200 && this.y == 100){
-            i[k] = 2;
-            j[k] = 0;
-        }if (this.x == 1100 && this.y == 100){
-            i[k] = 0;
-            j[k] = 2;
-        }if (this.x == 1100 && this.y == 250){
-            i[k] = -2;
-            j[k] = 0;
-        }if (this.x == 350 && this.y == 250){
-            i[k] = 0;
-            j[k] = 2;
-        }if (this.x == 350 && this.y == 450){
-            i[k] = 2;
-            j[k] = 0;
-        }
     }
 }
 
@@ -120,14 +101,12 @@ function updateGA(){
 
     if (gameArea.frameNo == 1 || everyinterval(150)) {
         box.push(new component(30, 30, "red", 10, ondor / 2));
-        i.push(2);
-        j.push(0);
     }
 
     for (var k = 0; k < box.length; k += 1) {
-        box[k].nodeChek(k);
-        box[k].x += i[k];
-        box[k].y += j[k];
+        // box[k].nodeChek(k);
+        box[k].x += 1;
+        box[k].y += 0;
         box[k].update();
     }
 
