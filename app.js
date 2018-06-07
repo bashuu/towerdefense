@@ -39,21 +39,21 @@ map[6][13] = 't';
 function startGame() {
     gameArea.start();
     // creating other canvas
-    wall = new component(20, urt, "green", urt + 30, 0, 0);
-    tower1 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 0 * titleHeigth, 0);
-    tower2 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 2 * titleHeigth,0);
-    tower3 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 4 * titleHeigth,0);
-    tower4 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 6 * titleHeigth,0);
+    wall = new component(20, urt, "green", urt + 30, 0, 0, "wall");
+    // tower1 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 0 * titleHeigth, 0, tower);
+    // tower2 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 2 * titleHeigth,0, tower);
+    // tower3 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 4 * titleHeigth,0, tower);
+    // tower4 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 6 * titleHeigth,0, tower);
 
-    tower5 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 0 * titleHeigth,0);
-    tower6 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 2 * titleHeigth,0);
-    tower7 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 4 * titleHeigth,0);
-    tower8 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 6 * titleHeigth,0);
+    // tower5 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 0 * titleHeigth,0, tower);
+    // tower6 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 2 * titleHeigth,0, tower);
+    // tower7 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 4 * titleHeigth,0,);
+    // tower8 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 6 * titleHeigth,0);
 
-    tower9 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 0 * titleHeigth,0);
-    tower10 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 2 * titleHeigth,0);
-    tower11 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 4 * titleHeigth,0);
-    tower12 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 6 * titleHeigth,0);
+    // tower9 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 0 * titleHeigth,0);
+    // tower10 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 2 * titleHeigth,0);
+    // tower11 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 4 * titleHeigth,0);
+    // tower12 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 6 * titleHeigth,0);
     
 }
 
@@ -85,7 +85,12 @@ function everyinterval(n) {
     return false;
 }
 // creating boxes
-function component(width, height, color, x, y, health) {
+function component(width, height, color, x, y, health, type) {
+    this.type = type;
+    if (this.type == "image"){
+        this.image = new Image();
+        this.image.src = color;
+    }
     this.width = width;
     this.height = height;
     this.x = x;
@@ -93,9 +98,14 @@ function component(width, height, color, x, y, health) {
     this.health = health
 
     this.update = function(){
+
         ctx = gameArea.context;
-        ctx.fillStyle = color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        if(type == "image"){
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+        }else{
+            ctx.fillStyle = color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
     }
 
     // checking crashed with otherbj
@@ -147,49 +157,6 @@ function component(width, height, color, x, y, health) {
                 break;
         }
     }
-}
-// updating Screen
-
-function updateGA(){
-    // checking box entered the base
-    for (var k = 0; k < box.length; k += 1) {
-        if (box[k].crashWith(wall)) {
-            gameArea.stop();
-            return;
-        } 
-    }
-    gameArea.clear();
-    gameArea.frameNo += 3;
-
-    //creating box every 40 frame
-    if (gameArea.frameNo == 1 || everyinterval(40)) {
-        box.push(new component(30, 30, "red", 10, 1 * titleHeigth, 5))
-        xDir.push(xSpeed);
-        yDir.push(0);
-    }
-    // checking where is box is and updating them
-    for (var k = 0; k < box.length; k += 1) {
-        box[k].nodeChek(k);
-        box[k].x += xDir[k];
-        box[k].y += yDir[k];
-        box[k].update();
-    }
-    
-    tower1.update();
-    tower2.update();
-    tower3.update();
-    tower4.update();
-    tower5.update();
-    tower6.update();
-    tower7.update();
-    tower8.update();
-    tower9.update();
-    tower10.update();
-    tower11.update();
-    tower12.update();
-
-    wall.update();
- 
 }
 
 // function writeMessage(canvas, message){
