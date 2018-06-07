@@ -8,7 +8,7 @@ var worldHeight = 7;
 var titleWidth = 64;
 var titleHeigth = 64;
 var map = [[]];
-
+var tower = [];
 
 for(i = 0; i < worldHeight; i++) {
     map[i] = [];
@@ -40,21 +40,16 @@ function startGame() {
     gameArea.start();
     // creating other canvas
     wall = new component(20, urt, "green", urt + 30, 0, 0, "wall");
-    // tower1 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 0 * titleHeigth, 0, tower);
-    // tower2 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 2 * titleHeigth,0, tower);
-    // tower3 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 4 * titleHeigth,0, tower);
-    // tower4 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 6 * titleHeigth,0, tower);
-
-    // tower5 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 0 * titleHeigth,0, tower);
-    // tower6 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 2 * titleHeigth,0, tower);
-    // tower7 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 4 * titleHeigth,0,);
-    // tower8 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 6 * titleHeigth,0);
-
-    // tower9 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 0 * titleHeigth,0);
-    // tower10 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 2 * titleHeigth,0);
-    // tower11 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 4 * titleHeigth,0);
-    // tower12 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 6 * titleHeigth,0);
-    
+    // tower = new component(titleWidth, titleHeigth, "black", 0 * titleWidth, 5 * titleHeigth, 200, tower);
+    for (var i = 0; i < 12; i++){
+        var x = 5, y = 0;
+        tower.push(new component(titleWidth, titleHeigth, "black", x * titleWidth, y * titleHeigth, 200, tower));
+        y += 2;
+        if (y > 6){
+            y = 0;
+            x += 4;
+        }
+    }
 }
 
 var gameArea = {
@@ -86,6 +81,7 @@ function everyinterval(n) {
 }
 // creating boxes
 function component(width, height, color, x, y, health, type) {
+    
     this.type = type;
     if (this.type == "image"){
         this.image = new Image();
@@ -156,6 +152,49 @@ function component(width, height, color, x, y, health, type) {
             default :
                 break;
         }
+    }
+    this.erase = function(k){
+        var b = this[this.length - 1];
+        this[this.length - 1] = this[k];
+        this[k] = b;
+        this.pop();
+    }
+// tower 
+    this.inTowerRange = function(k){
+        var x1 = this.x;
+        var y1 = this.y;
+
+        var x2 = tower[k].x;
+        var y2 = tower[k].y;
+
+        var range = tower[k].health;
+        var tarHealth = this.health;
+
+        var curDis = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) + (y1 - y2));
+
+        if (curDis <= range){
+            var size = box.length - 1;
+            // box[k].clear();
+            // box[k].erase(k);
+            var b = box[size];
+            box[size] = box[k];
+            box[k] = b;
+            box.pop();
+            var b = xDir[size];
+            xDir[size] = xDir[k];
+            XDir[k] = b;
+            XDir.pop();
+            var b = yDir[size];
+            yDir[size] = yDir[k];
+            yDir[k] = b;
+            yDir.pop();
+        }
+    }
+    this.erase = function(k){
+        var b = this[this.length - 1];
+        this[this.length - 1] = this[k];
+        this[k] = b;
+        this.pop();
     }
 }
 
