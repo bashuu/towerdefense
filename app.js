@@ -1,13 +1,12 @@
 var box = [];
 var wall;
 var ondor, urt;
-var xSpeed = 5, ySpeed = 5;
+var xSpeed = 4.2, ySpeed = 4.2;
 var xDir = [], yDir = [];
 var worldWidth = 20;
 var worldHeight = 7;
 var titleWidth = 64;
 var titleHeigth = 64;
-var egde = [];
 var map = [[]];
 
 
@@ -24,21 +23,22 @@ map[3][16] = 'l';
 map[3][2] = 'd';
 map[5][2] = 'r';
 
-// map[0][5] = 't';
-// map[2][5] = 't';
-// map[4][5] = 't';
-// map[6][5] = 't';
-// map[0][9] = 't';
-// map[2][9] = 't';
-// map[4][9] = 't';
-// map[6][9] = 't';
-// map[0][13] = 't';
-// map[2][13] = 't';
-// map[4][13] = 't';
-// map[6][13] = 't';
+map[0][5] = 't';
+map[2][5] = 't';
+map[4][5] = 't';
+map[6][5] = 't';
+map[0][9] = 't';
+map[2][9] = 't';
+map[4][9] = 't';
+map[6][9] = 't';
+map[0][13] = 't';
+map[2][13] = 't';
+map[4][13] = 't';
+map[6][13] = 't';
 
 function startGame() {
     gameArea.start();
+    // creating other canvas
     wall = new component(20, urt, "green", urt + 30, 0);
     tower1 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 0 * titleHeigth);
     tower2 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 2 * titleHeigth);
@@ -56,6 +56,7 @@ function startGame() {
     tower12 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 6 * titleHeigth);
     
 }
+
 var gameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
@@ -68,10 +69,11 @@ var gameArea = {
         this.frameNo = 0;
         this.interval = setInterval(updateGA, 20);
     },
-
+    // clearing screen
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     },
+
 
     stop : function(){
         clearInterval(this.interval);
@@ -82,7 +84,7 @@ function everyinterval(n) {
     if ((gameArea.frameNo / n) % 1 == 0) {return true;}
     return false;
 }
-
+// creating boxes
 function component(width, height, color, x, y) {
     this.width = width;
     this.height = height;
@@ -95,6 +97,7 @@ function component(width, height, color, x, y) {
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
+    // checking crashed with otherbj
     this.crashWith = function(otherobj) {
         var myleft = this.x;
         var myright = this.x + (this.width);
@@ -118,7 +121,7 @@ function component(width, height, color, x, y) {
 
         return crash;
     }
-
+// checking point
     this.nodeChek = function(k){
         var i = Math.floor(this.y / titleHeigth);
         var j = Math.floor(this.x / titleWidth);
@@ -144,8 +147,10 @@ function component(width, height, color, x, y) {
         }
     }
 }
+// updating Screen
 
 function updateGA(){
+    // checking box entered the base
     for (var k = 0; k < box.length; k += 1) {
         if (box[k].crashWith(wall)) {
             gameArea.stop();
@@ -155,12 +160,13 @@ function updateGA(){
     gameArea.clear();
     gameArea.frameNo += 3;
 
-    if (gameArea.frameNo == 1 || everyinterval(30)) {
+    //creating box every 40 frame
+    if (gameArea.frameNo == 1 || everyinterval(40)) {
         box.push(new component(30, 30, "red", 10, 1 * titleHeigth))
         xDir.push(xSpeed);
         yDir.push(0);
     }
-
+    // checking where is box is and updating them
     for (var k = 0; k < box.length; k += 1) {
         box[k].nodeChek(k);
         box[k].x += xDir[k];
@@ -169,7 +175,6 @@ function updateGA(){
     }
     
     tower1.update();
-    
     tower2.update();
     tower3.update();
     tower4.update();
@@ -181,6 +186,7 @@ function updateGA(){
     tower10.update();
     tower11.update();
     tower12.update();
+
     wall.update();
  
 }
