@@ -1,27 +1,61 @@
 var box = [];
 var wall;
 var ondor, urt;
-var i = [2]; j = [0];
+var xSpeed = 5, ySpeed = 5;
+var xDir = [], yDir = [];
 var worldWidth = 20;
 var worldHeight = 7;
 var titleWidth = 64;
-var titleHeigth = 90;
+var titleHeigth = 64;
+var egde = [];
+var map = [[]];
 
-var map = [];
+
 for(i = 0; i < worldHeight; i++) {
     map[i] = [];
     for(j = 0; j < worldWidth; j++) {
-        map[i][j] = 0;
+        map[i][j] = 'e';
     }
 }
+
+
+map[1][16] = 'd';
+map[3][16] = 'l';
+map[3][2] = 'd';
+map[5][2] = 'r';
+
+map[5][0] = 't';
+map[5][2] = 't';
+map[5][4] = 't';
+map[5][5] = 't';
+map[9][0] = 't';
+map[9][2] = 't';
+map[9][4] = 't';
+map[9][6] = 't';
+map[13][0] = 't';
+map[13][2] = 't';
+map[13][4] = 't';
+map[13][6] = 't';
 
 function startGame() {
     gameArea.start();
     wall = new component(20, urt, "green", urt + 30, 0);
+    tower1 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 0 * titleHeigth);
+    tower2 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 2 * titleHeigth);
+    tower3 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 4 * titleHeigth);
+    tower4 = new component(titleWidth, titleHeigth, "black", 5 * titleWidth, 6 * titleHeigth);
+
+    tower5 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 0 * titleHeigth);
+    tower6 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 2 * titleHeigth);
+    tower7 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 4 * titleHeigth);
+    tower8 = new component(titleWidth, titleHeigth, "black", 9 * titleWidth, 6 * titleHeigth);
+
+    tower9 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 0 * titleHeigth);
+    tower10 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 2 * titleHeigth);
+    tower11 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 4 * titleHeigth);
+    tower12 = new component(titleWidth, titleHeigth, "black", 13 * titleWidth, 6 * titleHeigth);
+    
 }
-
-
-
 var gameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
@@ -86,6 +120,28 @@ function component(width, height, color, x, y) {
     }
 
     this.nodeChek = function(k){
+        var i = Math.floor(this.y / titleHeigth);
+        var j = Math.floor(this.x / titleWidth);
+        switch(map[i][j]){
+            case 'u':
+                xDir[k] = 0;
+                yDir[k] = -1 * ySpeed;
+                break;
+            case 'r':   
+                xDir[k] = xSpeed;
+                yDir[k] = 0;
+                break;
+            case 'd':    
+                xDir[k] = 0;
+                yDir[k] = ySpeed;
+                break;
+            case 'l':
+                xDir[k] = -1 * xSpeed;
+                yDir[k] = 0;
+                break;
+            default :
+                break;
+        }
     }
 }
 
@@ -97,20 +153,36 @@ function updateGA(){
         } 
     }
     gameArea.clear();
-    gameArea.frameNo +=3;
+    gameArea.frameNo += 3;
 
-    if (gameArea.frameNo == 1 || everyinterval(150)) {
-        box.push(new component(30, 30, "red", 10, ondor / 2));
+    if (gameArea.frameNo == 1 || everyinterval(30)) {
+        box.push(new component(30, 30, "red", 10, 1 * titleHeigth))
+        xDir.push(xSpeed);
+        yDir.push(0);
     }
 
     for (var k = 0; k < box.length; k += 1) {
-        // box[k].nodeChek(k);
-        box[k].x += 1;
-        box[k].y += 0;
+        box[k].nodeChek(k);
+        box[k].x += xDir[k];
+        box[k].y += yDir[k];
         box[k].update();
     }
-
+    
+    tower1.update();
+    
+    tower2.update();
+    tower3.update();
+    tower4.update();
+    tower5.update();
+    tower6.update();
+    tower7.update();
+    tower8.update();
+    tower9.update();
+    tower10.update();
+    tower11.update();
+    tower12.update();
     wall.update();
+ 
 }
 
 // function writeMessage(canvas, message){
