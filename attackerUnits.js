@@ -45,23 +45,28 @@ function enemyForm(width, height, x, y, health, speed, color){
 }
 
 function addEnemy(){
-    enemy.push(new enemyForm(50, 50, spawnLocX, spawnLocY, 10, speed, sprite));
+    enemy.push(new enemyForm(50, 50, spawnLocX, spawnLocY, enemyHealth, speed, sprite));
     xDir.push(speed);
     yDir.push(0);
 }
 
 function checkEnemy(){
-    for(var i = 0; i < enemy.length; i++){
+    var size = enemy.length;
+    for(var i = 0; i < size; i++){
         if (enemy[i].x > titleWidth * worldWidth + 40){
             gameOver();
             enemy.splice(i, 1);
             xDir.splice(i, 1);
             yDir.splice(i, 1);
+            i--;
+            size--;
         }
         if (enemy[i].health <= 0){
             enemy.splice(i, 1);
             xDir.splice(i, 1);
             yDir.splice(i, 1);
+            i--;
+            size--;
         }
     }
 }

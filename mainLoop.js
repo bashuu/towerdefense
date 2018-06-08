@@ -6,6 +6,7 @@ var titleHeigth = 64;
 var map = [[]];
 var enemy = [];
 var check = true;
+var tower = [];
 
 
 for(i = 0; i < worldHeight; i++) {
@@ -22,12 +23,13 @@ map[5][2] = 'r';
 
 function startGame() {
     gameArea.start();
+    addTower(0, 2);
+    addTower(0, 10);
 }
-
 var gameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
-        this.canvas.width = worldWidth* titleWidth;
+        this.canvas.width = worldWidth * titleWidth;
         this.canvas.height = worldHeight * titleHeigth;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
@@ -60,6 +62,11 @@ function mainLoop(){
     enemy[i].move(i);
   }
 
+  for (var i = 0; i < tower.length; i++){
+    tower[i].findTarget();
+    tower[i].attack();
+  }
+
   setTimeout(mainLoop, 1000 / fps);
 }
 
@@ -69,8 +76,8 @@ function updateGA(){
   for (var k = 0; k < enemy.length; k += 1) 
       enemy[k].update();
   
-  // for (var i = 0; i < tower.length; i++)
-  //     tower[i].update();
+  for (var i = 0; i < tower.length; i++)
+      tower[i].update();
   if(check)
     requestAnimationFrame(updateGA);
 }
@@ -80,6 +87,6 @@ function gameOver(){
   ctx.font = "30px Comic Sans MS";
   // alert("Game Over");
   gameArea.stop();
-  gameArea.clear();
+  gameArea.clear()
   alert("GameOver");
 }
