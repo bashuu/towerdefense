@@ -1,0 +1,10 @@
+var fps = 30;
+var enemySpawnTimer = 30;
+var spawnLocX = 10, spawnLocY = 1 * titleHeigth;
+var sprite = "sprite.png";
+var gameOverPNG = "gameOver";
+var worldWidth = 20;
+var worldHeight = 7;
+var titleWidth = 64;
+var titleHeigth = 64;
+var speed = 6;
