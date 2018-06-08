@@ -47,6 +47,5 @@ function towerFrom(width, height, x, y, range, attackDmg, fireRate, color, targe
 
 function addTower(i, j){
     tower.push(new towerFrom(50, 50, j * titleHeigth, i * titleWidth, towerRange, towerDmg, rateofFire, towerSprite, null));
-    // map[i][j] = 't';
+    map[i][j] = 't';
 }
-//WIP 
