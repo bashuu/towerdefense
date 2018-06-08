@@ -69,8 +69,8 @@ function updateGA(){
   for (var k = 0; k < enemy.length; k += 1) 
       enemy[k].update();
   
-  for (var i = 0; i < tower.length; i++)
-      tower[i].update();
+  // for (var i = 0; i < tower.length; i++)
+  //     tower[i].update();
   if(check)
     requestAnimationFrame(updateGA);
 }
