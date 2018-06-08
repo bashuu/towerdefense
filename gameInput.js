@@ -1,7 +1,7 @@
 var fps = 30;
 var enemySpawnTimer = 30;
 var spawnLocX = 10, spawnLocY = 1 * titleHeigth;
-var sprite = "sprite.png";
+var sprite = "garen.gif";
 var gameOverPNG = "gameOver";
 var worldWidth = 20;
 var worldHeight = 7;
