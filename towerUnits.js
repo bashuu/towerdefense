@@ -39,7 +39,6 @@ function towerFrom(width, height, x, y, range, attackDmg, fireRate, color, targe
         this.fireRate--;
         if(this.target && this.fireRate <= 0){
             this.target.health -= attackDmg;
-            console.log(this.target.health);
             this.fireRate = rateofFire;
         }
     }
