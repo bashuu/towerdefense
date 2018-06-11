@@ -16,6 +16,18 @@ for(i = 0; i < worldHeight; i++) {
     }
 }
 
+
+for (var i = 0; i < 15; i++)
+    map[1][i] = 'p';
+for (var i = 1; i < 2; i++)
+    map[i][16] = 'p';
+for (var i = 2; i < 15; i++)
+    map[3][i] = 'p';
+for (var i = 3; i < 4; i++)
+    map[i][2] = 'p';
+for (var i = 2; i < worldWidth; i++)
+    map[5][i] = 'p';
+
 map[1][16] = 'd';
 map[3][16] = 'l';
 map[3][2] = 'd';
@@ -23,8 +35,6 @@ map[5][2] = 'r';
 
 function startGame() {
     gameArea.start();
-    addTower(0, 2);
-    addTower(0, 10);
 }
 var gameArea = {
     canvas : document.createElement("canvas"),
@@ -53,7 +63,21 @@ function mainLoop(){
   enemySpawnTimer--;
   if (enemySpawnTimer == 0){
     addEnemy();
-    enemySpawnTimer = 30;
+    var rand = Math.floor(Math.random() * 3);
+    switch(rand){
+        case 0:
+            enemySpawnTimer = 15;
+            break;
+        case 1:
+            enemySpawnTimer = 30;
+            break;
+        case 2:
+            enemySpawnTimer = 45;
+            break;
+        default:
+            console.log("ERROR");
+            break;
+    }
   }
 
   for (var i = 0; i < enemy.length; i++){
@@ -71,15 +95,16 @@ function mainLoop(){
 }
 
 function updateGA(){
-  gameArea.clear();
+    gameArea.clear();
 
-  for (var k = 0; k < enemy.length; k += 1) 
-      enemy[k].update();
-  
-  for (var i = 0; i < tower.length; i++)
-      tower[i].update();
-  if(check)
-    requestAnimationFrame(updateGA);
+    for (var k = 0; k < enemy.length; k += 1) 
+        enemy[k].update();
+    
+    for (var i = 0; i < tower.length; i++)
+        tower[i].update();
+
+    if(check)
+        requestAnimationFrame(updateGA);
 }
 
 function gameOver(){

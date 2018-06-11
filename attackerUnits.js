@@ -45,7 +45,7 @@ function enemyForm(width, height, x, y, health, speed, color){
 }
 
 function addEnemy(){
-    enemy.push(new enemyForm(50, 50, spawnLocX, spawnLocY, enemyHealth, speed, sprite));
+    enemy.push(new enemyForm(50, 50, spawnLocX, spawnLocY, enemyHealth, speed, enemySprite));
     xDir.push(speed);
     yDir.push(0);
 }
