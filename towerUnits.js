@@ -38,7 +38,7 @@ function towerFrom(width, height, x, y, range, attackDmg, fireRate, color, targe
     this.attack = function(){
         this.fireRate--;
         if(this.target && this.fireRate <= 0){
-            this.target.health -= attackDmg;
+            bullet.push(new bulletFrom  (this.x, this.y, this.target, towerDmg));
             this.fireRate = rateofFire;
         }
     }

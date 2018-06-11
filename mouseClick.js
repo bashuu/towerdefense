@@ -16,7 +16,7 @@ function getMousePos(evt) {
 	};
 } 
 
-window.addEventListener('mousemove', getMousePos, false); 
+window.addEventListener('mousemove', getMousePos, false);
 
 function towerAllowed(i, j){
 	if (map[i][j] == 'e')

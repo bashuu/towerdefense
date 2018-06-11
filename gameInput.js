@@ -1,5 +1,5 @@
 var fps = 60;
-var enemySpawnTimer = 500;
+var enemySpawnTimer = 1;
 var spawnLocX = 10, spawnLocY = 1 * titleHeigth;
 var gameOverPNG = "gameOver";
 var worldWidth = 20;
