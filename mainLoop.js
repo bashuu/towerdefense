@@ -9,6 +9,7 @@ var check = true;
 var tower = [];
 var bullet = [];
 var curMoney;
+var sprites = []; 
 
 for(i = 0; i < worldHeight; i++) {
     map[i] = [];
@@ -63,15 +64,20 @@ function mainLoop(){
     checkEnemy();
     warriorSpawnTime--;
     panthionSpawnTime--;
+    wolfSpawnTime--;
     if (warriorSpawnTime <= 0){
         addWarrior();
-        warriorSpawnTime = spawnTimeSelector(30);
+        warriorSpawnTime = spawnTimeSelector(130);
     }
     if (panthionSpawnTime <= 0){
         addPanthion();
-        panthionSpawnTime = spawnTimeSelector(50);
+        panthionSpawnTime = spawnTimeSelector(150);
     }
     
+    if (wolfSpawnTime <= 0){
+        addWolf()
+        wolfSpawnTime = spawnTimeSelector(150);
+    }
 
     for (var i = 0; i < enemy.length; i++){
         checkEnemy();
@@ -100,9 +106,10 @@ function mainLoop(){
 function updateGA(){
     gameArea.clear();
 
-    for (var k = 0; k < enemy.length; k += 1) 
-        enemy[k].update();
-    
+    for (var k = 0; k < enemy.length; k += 1) {
+        sprites[k].update();
+        sprites[k].draw(enemy[k].x, enemy[k].y);
+    }
     for (var i = 0; i < tower.length; i++)
         tower[i].update();
 
@@ -115,12 +122,12 @@ function updateGA(){
 }
 
 function gameOver(){
-  var ctx = gameArea.context;
-  ctx.font = "30px Comic Sans MS";
-  // alert("Game Over");
-  gameArea.stop();
-  gameArea.clear()
-  alert("GameOver");
+    var ctx = gameArea.context;
+    ctx.font = "30px Comic Sans MS";
+    // alert("Game Over");
+    gameArea.stop();
+    gameArea.clear()
+    alert("GameOver");
 }
 
 function spawnTimeSelector(x){
