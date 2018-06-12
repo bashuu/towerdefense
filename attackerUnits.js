@@ -24,18 +24,18 @@ function enemyForm(width, height, x, y, health, speed, color){
         switch(map[i][j]){
             case 'u':
                 xDir[k] = 0;
-                yDir[k] = -1 * speed;
+                yDir[k] = -1 * enemy[k].speed;
                 break;
             case 'r':   
-                xDir[k] = speed;
+                xDir[k] = enemy[k].speed;
                 yDir[k] = 0;
                 break;
             case 'd':    
                 xDir[k] = 0;
-                yDir[k] = speed;
+                yDir[k] = enemy[k].speed;
                 break;
             case 'l':
-                xDir[k] = -1 * speed;
+                xDir[k] = -1 * enemy[k].speed;
                 yDir[k] = 0;
                 break;
             default :
@@ -44,11 +44,18 @@ function enemyForm(width, height, x, y, health, speed, color){
     }
 }
 
-function addEnemy(){
-    enemy.push(new enemyForm(50, 50, spawnLocX, spawnLocY, enemyHealth, speed, enemySprite));
+function addWarrior(){
+    enemy.push(new enemyForm(50, 50, spawnLocX, spawnLocY, enemyHealth, speed, warriorSprite));
     xDir.push(speed);
     yDir.push(0);
 }
+
+function addPanthion(){
+    enemy.push(new enemyForm(50, 50, spawnLocX, spawnLocY, enemyHealth * 2, speed * 0.7, panthionSprite));
+    xDir.push(speed * 0.5);
+    yDir.push(0);
+}
+
 
 function checkEnemy(){
     var size = enemy.length;
@@ -62,6 +69,7 @@ function checkEnemy(){
             size--;
         }
         if (enemy[i].health <= 0){
+            money += drop;
             enemy.splice(i, 1);
             xDir.splice(i, 1);
             yDir.splice(i, 1);
@@ -69,15 +77,4 @@ function checkEnemy(){
             size--;
         }
     }
-}
-
-function sprite(url, pos, size, speed, frames, dir, once){
-    this.pos = pos;
-    this.size = size;
-    this.speed = typeof speed === 'number' ? speed : 0;
-    this.frames = frames;
-    this._index = 0;
-    this.url = url;
-    this.dir = dir || 'horizontal';
-    this.once = once;
 }

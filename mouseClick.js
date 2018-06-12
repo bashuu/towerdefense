@@ -1,4 +1,3 @@
-
 gameArea.canvas.addEventListener('mousedown', function() {
 	var i  = Math.floor(i = mouse.y / titleHeigth),
 	j = Math.floor(mouse.x / titleWidth);
@@ -19,7 +18,9 @@ function getMousePos(evt) {
 window.addEventListener('mousemove', getMousePos, false);
 
 function towerAllowed(i, j){
-	if (map[i][j] == 'e')
+	if (map[i][j] == 'e' && towerPrice <= money){
 		return true;
+	}
 	return false;
+
 }

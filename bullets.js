@@ -5,12 +5,12 @@ function bulletFrom(x, y, target, hit){
     this.hit = hit;
 
 
-    this.r = 10;
+    this.r = 5;
     this.speed = speed * 2;
 
     this.move = function() {
         var xDist = this.target.x + titleWidth / 2 - this.x;
-        var yDist = this.target.y + titleWidth/2-this.y;
+        var yDist = this.target.y + titleWidth / 2 - this.y;
         var dist = Math.sqrt(xDist * xDist + yDist * yDist);
         this.x = this.x + this.speed * xDist / dist;
         this.y = this.y + this.speed * yDist / dist;

@@ -8,6 +8,7 @@ var enemy = [];
 var check = true;
 var tower = [];
 var bullet = [];
+var curMoney;
 
 for(i = 0; i < worldHeight; i++) {
     map[i] = [];
@@ -16,13 +17,13 @@ for(i = 0; i < worldHeight; i++) {
     }
 }
 
-for (var i = 0; i < 15; i++)
+for (var i = 0; i < 16; i++)
     map[1][i] = 'p';
-for (var i = 1; i < 2; i++)
+for (var i = 1; i < 3; i++)
     map[i][16] = 'p';
-for (var i = 2; i < 15; i++)
+for (var i = 2; i < 16; i++)
     map[3][i] = 'p';
-for (var i = 3; i < 4; i++)
+for (var i = 3; i < 5; i++)
     map[i][2] = 'p';
 for (var i = 2; i < worldWidth; i++)
     map[5][i] = 'p';
@@ -34,6 +35,7 @@ map[5][2] = 'r';
 
 function startGame() {
     gameArea.start();
+    curMoney = new moneyFrom("15px Arial", 30, 30);
 }
 var gameArea = {
     canvas : document.createElement("canvas"),
@@ -59,25 +61,17 @@ var gameArea = {
 
 function mainLoop(){
     checkEnemy();
-    enemySpawnTimer--;
-    if (enemySpawnTimer == 0){
-        addEnemy();
-        var rand = Math.floor(Math.random() * 3);
-        switch(rand){
-            case 0:
-                enemySpawnTimer = 15;
-                break;
-            case 1:
-                enemySpawnTimer = 30;
-                break;
-            case 2:
-                enemySpawnTimer = 45;
-                break;
-            default:
-                console.log("ERROR");
-                break;
-        }
+    warriorSpawnTime--;
+    panthionSpawnTime--;
+    if (warriorSpawnTime <= 0){
+        addWarrior();
+        warriorSpawnTime = spawnTimeSelector(30);
     }
+    if (panthionSpawnTime <= 0){
+        addPanthion();
+        panthionSpawnTime = spawnTimeSelector(50);
+    }
+    
 
     for (var i = 0; i < enemy.length; i++){
         checkEnemy();
@@ -115,6 +109,7 @@ function updateGA(){
     for (var i = 0; i < bullet.length; i++)
         bullet[i].update();
 
+    curMoney.update(money);
     if(check)
         requestAnimationFrame(updateGA);
 }
@@ -126,4 +121,23 @@ function gameOver(){
   gameArea.stop();
   gameArea.clear()
   alert("GameOver");
+}
+
+function spawnTimeSelector(x){
+    var rand = Math.floor(Math.random() * 3);
+    switch(rand){
+        case 0:
+            enemySpawnTimer = x * 0.4;
+            break;
+        case 1:
+            enemySpawnTimer = x;
+            break;
+        case 2:
+            enemySpawnTimer = x * 1.4;
+            break;
+        default:
+            console.log("ERROR");
+            break;
+    }
+    return enemySpawnTimer;
 }
