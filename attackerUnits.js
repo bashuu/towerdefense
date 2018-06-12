@@ -41,21 +41,21 @@ function addWarrior(){
     enemy.push(new enemyForm(50, 50, spawnLocX, spawnLocY, enemyHealth, speed));
     xDir.push(speed);
     yDir.push(0);
-    sprites.push(new SpriteSheet(warriorSprite, 50, 50, 20, 6));
+    enemySprites.push(new SpriteSheet(warriorSprite, 50, 50, 8, 6));
 }
 
 function addPanthion(){
-    enemy.push(new enemyForm(50, 50, spawnLocX, spawnLocY, enemyHealth * 2, speed * 0.7));
-    xDir.push(speed * 0.5);
+    enemy.push(new enemyForm(50, 50, spawnLocX, spawnLocY, enemyHealth * 2, speed * 0.8));
+    xDir.push(speed * 0.8);
     yDir.push(0);
-    sprites.push(new SpriteSheet(panthionSprite, 50, 50, 10, 6));
+    enemySprites.push(new SpriteSheet(panthionSprite, 50, 50, 10, 6));
 }
 
 function addWolf(){
     enemy.push(new enemyForm(100, 100, spawnLocX, spawnLocY, enemyHealth * 0.3, speed * 1.7));
     xDir.push(speed * 1.7);
     yDir.push(0)
-    sprites.push(new SpriteSheet(wolfSprite, 70, 50, 6, 4));
+    enemySprites.push(new SpriteSheet(wolfSprite, 70, 50, 6, 4));
 }
 
 
@@ -67,7 +67,7 @@ function checkEnemy(){
             enemy.splice(i, 1);
             xDir.splice(i, 1);
             yDir.splice(i, 1);
-            sprites.splice(i, 1);
+            enemySprites.splice(i, 1);
             i--;
             size--;
         }
@@ -76,7 +76,7 @@ function checkEnemy(){
             enemy.splice(i, 1);
             xDir.splice(i, 1);
             yDir.splice(i, 1);
-            sprites.splice(i, 1);
+            enemySprites.splice(i, 1);
             i--;
             size--;
         }

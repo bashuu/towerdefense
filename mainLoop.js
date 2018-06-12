@@ -1,15 +1,18 @@
 var xDir = [], yDir = [];
-var worldWidth = 20;
-var worldHeight = 7;
-var titleWidth = 64;
-var titleHeigth = 64;
 var map = [[]];
 var enemy = [];
 var check = true;
 var tower = [];
 var bullet = [];
 var curMoney;
-var sprites = []; 
+var enemySprites = [];
+var towerSprites = [];
+
+var worldWidth = 20;
+var worldHeight = 7;
+var titleWidth = 64;    
+var titleHeigth = 64;
+
 
 for(i = 0; i < worldHeight; i++) {
     map[i] = [];
@@ -36,13 +39,13 @@ map[5][2] = 'r';
 
 function startGame() {
     gameArea.start();
-    curMoney = new moneyFrom("15px Arial", 30, 30);
+    curMoney = new moneyFrom("15px Arial", 0,  worldHeight * titleHeigth);
 }
 var gameArea = {
     canvas : document.createElement("canvas"),
     start : function() {
         this.canvas.width = worldWidth * titleWidth;
-        this.canvas.height = worldHeight * titleHeigth;
+        this.canvas.height = worldHeight * titleHeigth + 100;
         this.context = this.canvas.getContext("2d");
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.timeout = setTimeout(mainLoop, 1000 / fps);
@@ -61,22 +64,26 @@ var gameArea = {
   }
 
 function mainLoop(){
+    console.log(wolfSpawnTime);
     checkEnemy();
     warriorSpawnTime--;
     panthionSpawnTime--;
     wolfSpawnTime--;
-    if (warriorSpawnTime <= 0){
+    if (warriorSpawnTime <= 0 && warriorCount > 0){
         addWarrior();
-        warriorSpawnTime = spawnTimeSelector(130);
+        warriorSpawnTime = spawnTimeSelector(spawnWindow * 0.7);
+        warriorCount--;
     }
-    if (panthionSpawnTime <= 0){
+    if (panthionSpawnTime <= 0 && panthionCount > 0){
         addPanthion();
-        panthionSpawnTime = spawnTimeSelector(150);
+        panthionSpawnTime = spawnTimeSelector(spawnWindow);
+        panthionCount--;
     }
     
-    if (wolfSpawnTime <= 0){
+    if (wolfSpawnTime <= 0 && wolfCount > 0){
         addWolf()
-        wolfSpawnTime = spawnTimeSelector(150);
+        wolfSpawnTime = spawnTimeSelector(spawnWindow * 0.5);
+        wolfCount--;
     }
 
     for (var i = 0; i < enemy.length; i++){
@@ -100,19 +107,23 @@ function mainLoop(){
         }
     }  
 
-  setTimeout(mainLoop, 1000 / fps);
+    if (checkWave())
+        newWave();
+
+    setTimeout(mainLoop, 1000 / fps);
 }
 
 function updateGA(){
     gameArea.clear();
 
     for (var k = 0; k < enemy.length; k += 1) {
-        sprites[k].update();
-        sprites[k].draw(enemy[k].x, enemy[k].y);
+        enemySprites[k].update();
+        enemySprites[k].draw(enemy[k].x, enemy[k].y);
     }
-    for (var i = 0; i < tower.length; i++)
-        tower[i].update();
-
+    for (var i = 0; i < tower.length; i++){
+        towerSprites[i].update();
+        towerSprites[i].draw(tower[i].x, tower[i].y);
+    }
     for (var i = 0; i < bullet.length; i++)
         bullet[i].update();
 

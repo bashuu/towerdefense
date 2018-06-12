@@ -47,4 +47,5 @@ function addTower(i, j){
     tower.push(new towerFrom(50, 50, j * titleHeigth, i * titleWidth, towerRange, towerDmg, rateofFire, towerSprite, null));
     map[i][j] = 't';
     money -= towerPrice;
+    towerSprites.push(new SpriteSheet(towerSprite, 50, 50, 10, 5));
 }
