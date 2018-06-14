@@ -1,15 +1,14 @@
-function SpriteSheet(path, frameWidth, frameHeight, frameSpeed, endFrame) {
-    var image = new Image();
-    var framesPerRow;
+function SpriteSheet(path, frameWidth, frameHeight, frameSpeed, endFrame, framesPerRow, dir) {    
+    this.frameWidth = frameWidth;
+    this.frameHeight = frameHeight;
+    this.dir = dir;
+    this.path = path;
 
     var self = this;
-    image.onload = function() {
-        framesPerRow = Math.floor(image.width / frameWidth);
-    };
 
     var currentFrame = 0;  
-    var counter = 0;       
-    image.src = path;
+    var counter = 0;  
+   
 
     this.update = function() {
         if (counter == (frameSpeed - 1))
@@ -19,14 +18,18 @@ function SpriteSheet(path, frameWidth, frameHeight, frameSpeed, endFrame) {
 
     this.draw = function(x, y) {
         ctx = gameArea.context
+        this.image = new Image;
+        this.image.src = this.path[this.dir];
         var row = Math.floor(currentFrame / framesPerRow);
         var col = Math.floor(currentFrame % framesPerRow);
 
         ctx.drawImage(
-            image,
+            this.image,
             col * frameWidth, row * frameHeight,
             frameWidth, frameHeight,
             x, y,
             frameWidth, frameHeight);
     }
+    
+
 }

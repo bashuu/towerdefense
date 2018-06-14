@@ -7,12 +7,18 @@ var bullet = [];
 var curMoney;
 var enemySprites = [];
 var towerSprites = [];
+var curScore;
+var tower1;
+var tower2;
+var deleteTower;
+var myHealth = 10;
+var curWave;
+var curLife;
 
 var worldWidth = 20;
 var worldHeight = 7;
 var titleWidth = 64;    
 var titleHeigth = 64;
-
 
 for(i = 0; i < worldHeight; i++) {
     map[i] = [];
@@ -29,17 +35,25 @@ for (var i = 2; i < 16; i++)
     map[3][i] = 'p';
 for (var i = 3; i < 5; i++)
     map[i][2] = 'p';
-for (var i = 2; i < worldWidth; i++)
+for (var i = 3; i < worldWidth; i++)
     map[5][i] = 'p';
 
 map[1][16] = 'd';
 map[3][16] = 'l';
-map[3][2] = 'd';
-map[5][2] = 'r';
+map[3][1] = 'd';
+map[5][1] = 'r';
 
 function startGame() {
     gameArea.start();
-    curMoney = new moneyFrom("15px Arial", 0,  worldHeight * titleHeigth);
+    curMoney = new textFrom("15px Arial", 0,  worldHeight * titleHeigth + 30, "Money : ");
+    curScore = new textFrom("15px Arial",  0,  worldHeight * titleHeigth + 45, "Score : ");
+    curWave = new textFrom("15px Arial", 0,  worldHeight * titleHeigth + 60, "wave : ");
+    curlife = new textFrom("15px Arial", 0, worldHeight * titleHeigth + 75, "life : ");
+
+    upgradeDmg = new button (300, worldHeight * titleHeigth, 100, 100, "black");
+    upgradeRange = new button (400, worldHeight * titleHeigth, 100, 100, "green");
+    tower1 = new button(100, worldHeight * titleHeigth, 100, 100, "red");
+    tower2 = new button(200, worldHeight * titleHeigth, 100, 100, "blue");
 }
 var gameArea = {
     canvas : document.createElement("canvas"),
@@ -64,11 +78,18 @@ var gameArea = {
   }
 
 function mainLoop(){
-    console.log(wolfSpawnTime);
     checkEnemy();
     warriorSpawnTime--;
     panthionSpawnTime--;
     wolfSpawnTime--;
+    bossSpawnTime--;
+
+    if (bossSpawnTime == 0 && bossCount > 0){
+        addBoss();
+        bossSpawnTime = spawnTimeSelector(40);
+        bossCount--;
+    }
+
     if (warriorSpawnTime <= 0 && warriorCount > 0){
         addWarrior();
         warriorSpawnTime = spawnTimeSelector(spawnWindow * 0.7);
@@ -81,15 +102,17 @@ function mainLoop(){
     }
     
     if (wolfSpawnTime <= 0 && wolfCount > 0){
-        addWolf()
+        addWolf();
         wolfSpawnTime = spawnTimeSelector(spawnWindow * 0.5);
         wolfCount--;
     }
 
     for (var i = 0; i < enemy.length; i++){
         checkEnemy();
-        enemy[i].nodeChek(i)
-        enemy[i].move(i);
+        if (enemy[i]){
+            enemy[i].nodeChek(i);
+            enemy[i].move(i);
+        }
     }
 
     for (var i = 0; i < tower.length; i++){
@@ -115,19 +138,29 @@ function mainLoop(){
 
 function updateGA(){
     gameArea.clear();
-
     for (var k = 0; k < enemy.length; k += 1) {
         enemySprites[k].update();
         enemySprites[k].draw(enemy[k].x, enemy[k].y);
     }
+
     for (var i = 0; i < tower.length; i++){
         towerSprites[i].update();
         towerSprites[i].draw(tower[i].x, tower[i].y);
     }
+
     for (var i = 0; i < bullet.length; i++)
         bullet[i].update();
 
     curMoney.update(money);
+    curScore.update(score);
+    curWave.update(waveCounter);
+    curlife.update(life);
+
+    tower1.update();
+    tower2.update();
+    upgradeDmg.update();
+    upgradeRange.update();
+
     if(check)
         requestAnimationFrame(updateGA);
 }
@@ -135,10 +168,9 @@ function updateGA(){
 function gameOver(){
     var ctx = gameArea.context;
     ctx.font = "30px Comic Sans MS";
-    // alert("Game Over");
     gameArea.stop();
     gameArea.clear()
-    alert("GameOver");
+    // alert("game over");
 }
 
 function spawnTimeSelector(x){
@@ -157,5 +189,5 @@ function spawnTimeSelector(x){
             console.log("ERROR");
             break;
     }
-    return enemySpawnTimer;
+    return enemySpawnTimer * delayHarden;
 }

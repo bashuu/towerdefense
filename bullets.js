@@ -4,9 +4,8 @@ function bulletFrom(x, y, target, hit){
     this.target = target;
     this.hit = hit;
 
-
     this.r = 5;
-    this.speed = speed * 2.5;
+    this.speed = speed * 3.3;
 
     this.move = function() {
         var xDist = this.target.x + titleWidth / 2 - this.x;

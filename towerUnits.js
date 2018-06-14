@@ -1,4 +1,4 @@
-function towerFrom(width, height, x, y, range, attackDmg, fireRate, color, target){
+function towerFrom(width, height, x, y, range, attackDmg, fireRate, color, target, time){
     this.width = width;
     this.height = height;
     this.x = x;
@@ -10,6 +10,7 @@ function towerFrom(width, height, x, y, range, attackDmg, fireRate, color, targe
     this.fireRate = fireRate;
     this.color = color;
     this.target = target;
+    this.time = time;
 
     this.update = function(){
         ctx = gameArea.context;
@@ -35,17 +36,39 @@ function towerFrom(width, height, x, y, range, attackDmg, fireRate, color, targe
     }
 
     this.attack = function(){
-        this.fireRate--;
-        if(this.target && this.fireRate <= 0){
-            bullet.push(new bulletFrom  (this.x + titleHeigth / 2, this.y + titleWidth / 2, this.target, towerDmg));
-            this.fireRate = rateofFire;
+        this.time--;
+        if(this.target && this.time <= 0){
+            bullet.push(new bulletFrom  (this.x + titleHeigth / 2, this.y + 10, this.target, this.attackDmg));
+            this.time = this.fireRate;
         }
     }
 }
 
-function addTower(i, j){
-    tower.push(new towerFrom(50, 50, j * titleHeigth, i * titleWidth, towerRange, towerDmg, rateofFire, towerSprite, null));
-    map[i][j] = 't';
+function addDemonicTower(i, j){
+    tower.push(new towerFrom(50, 50, j * titleHeigth, i * titleWidth, towerRange, towerDmg, demonnicTowerROF, demonicTowerSprite, null, demonnicTowerROF));
+    map[i][j] = tower.length;
     money -= towerPrice;
-    towerSprites.push(new SpriteSheet(towerSprite, 50, 50, 10, 5));
+    towerSprites.push(new SpriteSheet(demonicTowerSprite, 64, 64, 10, 5, 3, 0));
+}
+function addWaterTower(i, j){
+    tower.push(new towerFrom(50, 50, j * titleHeigth, i * titleWidth, towerRange * 2, towerDmg / 2, waterTowerROF, waterTowerSprite, null, waterTowerROF));
+    map[i][j] = tower.length - 1;
+    money -= towerPrice;
+    towerSprites.push(new SpriteSheet(waterTowerSprite, 64, 64, 10, 5, 3, 0));
+}
+
+function upgradeTowerDmg(){
+    if (money >= damageUpgradeCost){
+        for (var i = 0; i < tower.length; i++)
+            tower[i].attackDmg += 40;
+        money -= damageUpgradeCost;
+    }
+}
+
+function upgradeTowerRange(){
+    if (money >= rangeUpgradeCost){
+        for (var i = 0; i < tower.length; i++)
+            tower[i].range += 40;
+        money -= rangeUpgradeCost;
+    }
 }
